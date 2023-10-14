@@ -50,11 +50,11 @@ let converter = EdsrmMonotousDistributionConverter::new(
 let distributed_random_value = converter.generate_from_uniform(&mut rand_generator);
 ```
 
-##### EdsrmMonotousDistributionConverter
+##### EdsrmUniversalDistributionConverter
 Реализует двусторонний метод исключения для плотностей распределения с любым количеством кусков монотонности. Для создания нужно указать промежутки монотонности, функцию плотности распределения, размер(точность) сетки для каждого промежутка.
 ```rust
 // Создаём конвертер с плотностью распределения f(x) = 2.0 * x
-let converter = EdsrmMonotousDistributionConverter::new(
+let converter = EdsrmUniversalDistributionConverter::new(
     vec![0.0, 0.3, 0.6, 1.0],    // ranges - (0.0, 0.3) + (0.3, 0.6) + (0.6, 1.0) 
     |x| 2.0 * x,                 // distribution
     330                          // majorant_size_per_range
