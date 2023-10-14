@@ -64,38 +64,38 @@ impl Majorant {
 
     fn get_optimal_delta_x(start: f64, end: f64, is_rising: bool, size: usize, distribution: fn(f64) -> f64) -> Option<f64> {
         let mut x: f64 = (end - start) / size as f64;
-        let mut delta_den = 1;
-        fn get_delta(delta_den: i32) -> f64 { 1.0 / delta_den as f64 }
-        while get_delta(delta_den) >= x {
-            delta_den *= 10;
+        let mut delta = 1.0;
+        while delta >= x {
+            delta /= 10.0;
         }
         while Majorant::overflowed(x, distribution, is_rising, start, end, size) {
-            if x - get_delta(delta_den) < 0.0 {
-                delta_den *= 10;
+            if x - delta < 0.0 {
+                delta /= 10.0;
             }
-            x -= get_delta(delta_den);
+            x -= delta;
         }
         let mut one_digit_times = 0;
         loop {
-            if Majorant::overflowed(x + get_delta(delta_den), distribution, is_rising, start, end, size) {
-                delta_den *= 10;
-                if get_delta(delta_den) == 0.0 {
+            if Majorant::overflowed(x + delta, distribution, is_rising, start, end, size) {
+                delta /= 10.0;
+                if delta < 0.1_f64.powi(f64::DIGITS as i32) {
                     return Some(x);
                 }
                 one_digit_times = 0;
             } else {
                 one_digit_times += 1;
                 if one_digit_times > 10 {
+                    println!("{}", delta);
                     return None;
                 }
-                x += get_delta(delta_den);
+                x += delta;
             }
         }
     }
 
     pub fn get_area(&self) -> f64 {
         let column = &self.columns[0];
-        return (column.width * column.height * self.columns.len() as f64).abs();
+        return column.width * column.height * self.columns.len() as f64;
     } 
 }
 
