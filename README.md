@@ -5,7 +5,7 @@
 Для того, чтобы использовать библиотеку, добавьте зависимость в файл `Cargo.toml`
 ```toml
 [dependencies]
-distributed_random = { git = "https://github.com/andronix1/distributed-random" }
+distributed-random = { git = "https://github.com/andronix1/distributed-random" }
 ```
 ## Библиотека
 ### Модуль uniform
