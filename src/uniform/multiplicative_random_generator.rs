@@ -23,6 +23,6 @@ impl UniformRandomGenerator for MultiplicativeRandomGenerator {
         self.a1 = c % 16384;
         self.a2 = d % 16384;
         self.a3 = ((2842 * self.a1) + (2800 * self.a2) + (11973 * self.a3) + (d - d % 16384) / 16384) % 16384;
-        return (self.a3 as f64 * 1.0 / 4096.0 + self.a2 as f64 * 1.0 / (4096.0 * 16384.0) + self.a1 as f64 * 1.0 / (4096.0 * 16384.0 * 16384.0)) / 4.0;
+        return (self.a3 as f64 / 4096.0 + self.a2 as f64 / (4096.0 * 16384.0) + self.a1 as f64 / (4096.0 * 16384.0 * 16384.0)) / 4.0;
     }
 }

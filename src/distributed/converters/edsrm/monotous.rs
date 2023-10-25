@@ -117,8 +117,8 @@ impl EdsrmMonotousDistributionConverter {
     }
 }
 
-impl DistributionConverter for EdsrmMonotousDistributionConverter {
-    fn generate_from_uniform<G>(&self, generator: &mut G) -> f64 
+impl<G> DistributionConverter<G> for EdsrmMonotousDistributionConverter {
+    fn generate_from_uniform(&self, generator: &mut G) -> f64 
         where G: UniformRandomGenerator 
     {
         loop {
