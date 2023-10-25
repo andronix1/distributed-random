@@ -125,7 +125,7 @@ impl<G> DistributionConverter<G> for EdsrmMonotousDistributionConverter
     {
         loop {
             let x_gen: f64 = generator.next();
-            let column_index: usize = f64::floor(x_gen * self.majorant.columns.len() as f64) as usize;
+            let column_index: usize = (x_gen * self.majorant.columns.len() as f64) as usize;
             let column = &self.majorant.columns[column_index];
             let y: f64 = generator.next() * column.height;
             let result = column.x + column.width * (self.majorant.columns.len() as f64 * x_gen - column_index as f64);
