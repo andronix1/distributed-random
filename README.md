@@ -1,14 +1,13 @@
-# Distributed random
-## О библиотеке
+# О библиотеке
 Библиотека позволяет генерировать случайные числа с указанной плотностью распределения 
-## Установка
+# Установка
 Для того, чтобы использовать библиотеку, добавьте зависимость в файл `Cargo.toml`
 ```toml
 [dependencies]
-distributed_random = { git = "https://github.com/andronix1/distributed-random" }
+distributed-random = { git = "https://github.com/andronix1/distributed-random" }
 ```
-## Библиотека
-### Модуль uniform
+# Библиотека
+## Модуль uniform
 ```rust
 pub trait UniformRandomGenerator {
     fn next(&mut self) -> f64;
@@ -19,7 +18,7 @@ pub trait UniformRandomGenerator {
 let mut rand_generator = MultiplicativeRandomGenerator::new();
 let random_value = generator.next();
 ```
-### Модуль distributed
+## Модуль distributed
 ```rust
 pub trait DistributionConverter {
     fn generate_from_uniform<G>(&self, generator: &mut G) -> f64
@@ -27,7 +26,7 @@ pub trait DistributionConverter {
 }
 ```
 `DistributionConverter` описывает генератор случайных чисел с заданым распределением на основе равномерной случайной величины из `UniformRandomGenerator`. 
-#### IdfmDistributionConverter - Inverse Distribution Function Method
+### IdfmDistributionConverter - Inverse Distribution Function Method
 Реализует метод обратной функции распределения. Для создания нужно указать обратную функцию распределения.
 ```rust
 // Создаём конвертер с плотностью распределения f(x) = 2.0 * x. Обратной функцией распределения для f(x) является Fi(x) = sqrt(x)
@@ -36,8 +35,8 @@ let converter = IdfmDistributionConverter::new(
 );
 let distributed_random_value = converter.generate_from_uniform(&mut rand_generator);
 ```
-#### edsrm - Economical Double-Sided Rejection Method
-##### EdsrmMonotousDistributionConverter
+### edsrm - Economical Double-Sided Rejection Method
+#### EdsrmMonotousDistributionConverter
 Реализует двусторонний метод исключения для монотонных плотностей распределения. Для создания нужно указать функцию плотности распределения, промежуток из функции, размер(точность) сетки.
 ```rust
 // Создаём конвертер с плотностью распределения f(x) = 2.0 * x
@@ -50,7 +49,7 @@ let converter = EdsrmMonotousDistributionConverter::new(
 let distributed_random_value = converter.generate_from_uniform(&mut rand_generator);
 ```
 
-##### EdsrmUniversalDistributionConverter
+#### EdsrmUniversalDistributionConverter
 Реализует двусторонний метод исключения для плотностей распределения с любым количеством кусков монотонности. Для создания нужно указать промежутки монотонности, функцию плотности распределения, размер(точность) сетки для каждого промежутка. Примерно в 2 раза медленнее `EdsrmMonotousDistributionConverter`
 ```rust
 // Создаём конвертер с плотностью распределения f(x) = 2.0 * x
