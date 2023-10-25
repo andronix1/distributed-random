@@ -41,7 +41,9 @@ impl EdsrmUniversalDistributionConverter {
 }
 
 impl DistributionConverter for EdsrmUniversalDistributionConverter {
-    fn generate_from_uniform(&self, generator: &mut Box<dyn UniformRandomGenerator>) -> f64 {
+    fn generate_from_uniform<G>(&self, generator: &mut G) -> f64 
+        where G: UniformRandomGenerator
+    {
         let position = generator.next() * self.area;
         let mut id = 0;
         for i in 0..self.converters.len() {
