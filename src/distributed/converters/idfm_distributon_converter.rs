@@ -12,10 +12,8 @@ impl IdfmDistributionConverter {
     }
 }
 
-impl<G> DistributionConverter<G> for IdfmDistributionConverter {
-    fn generate_from_uniform(&self, uniform_generator: &mut G) -> f64
-        where G: UniformRandomGenerator 
-    {
+impl DistributionConverter for IdfmDistributionConverter {
+    fn generate_from_uniform(&self, uniform_generator: &mut Box<dyn UniformRandomGenerator>) -> f64 {
         (self.inverse_distribution)(uniform_generator.next())
     }
 }
