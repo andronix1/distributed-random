@@ -2,14 +2,14 @@ use crate::{
     distributed::DistributionConverter, uniform::UniformRandomGenerator, utils::get_optimal_value,
 };
 
-struct MajorantColumn {
-    x: f64,
-    inner_height: f64,
-    height: f64,
-    width: f64,
+pub struct MajorantColumn {
+    pub x: f64,
+    pub inner_height: f64,
+    pub height: f64,
+    pub width: f64,
 }
 pub struct Majorant {
-    columns: Vec<MajorantColumn>,
+    pub columns: Vec<MajorantColumn>,
 }
 
 impl Majorant {
