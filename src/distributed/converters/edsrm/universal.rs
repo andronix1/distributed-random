@@ -19,7 +19,7 @@ impl EdsrmUniversalDistributionConverter {
         if ranges.len() < 2 {
             return Err(())
         }
-        let mut result = Vec::new();
+        let mut result = Vec::with_capacity(ranges.len() - 1);
 
         let mut area = 0.0;
         for i in 0..ranges.len() - 1 {

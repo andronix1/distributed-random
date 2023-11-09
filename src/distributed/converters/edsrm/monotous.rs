@@ -61,7 +61,7 @@ impl Majorant {
         end: f64,
         size: usize,
     ) -> Vec<MajorantColumn> {
-        let mut result = Vec::new();
+        let mut result = Vec::with_capacity(size);
         result.reserve_exact(size);
         let start_pos = if is_rising { end } else { start };
         let area: f64 = initial_delta_x * (distribution)(start_pos).abs();
