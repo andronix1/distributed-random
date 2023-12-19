@@ -1,0 +1,6 @@
+{
+    "[rust]": {
+        "editor.defaultFormatter": "undefined_publisher.rust-formatter",
+        "editor.formatOnSave": true
+    }
+}

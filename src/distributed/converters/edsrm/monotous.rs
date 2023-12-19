@@ -125,6 +125,22 @@ impl EdsrmMonotousDistributionConverter {
     pub fn get_majorant(&self) -> &Majorant {
         return &self.majorant;
     }
+
+    pub(super) fn try_generate_from_uniform_in_range<G>(&self, x_gen: f64, generator: &mut G) -> Option<f64>
+    where
+        G: UniformRandomGenerator
+    {
+        let column_index: usize = (x_gen * self.majorant.columns.len() as f64) as usize;
+        let column = &self.majorant.columns[column_index];
+        let y: f64 = generator.next() * column.height;
+        let result = column.x
+            + column.width * (self.majorant.columns.len() as f64 * x_gen - column_index as f64);
+        return if y <= column.inner_height || y <= (self.distribution)(result) {
+            Some(result)
+        } else {
+            None
+        }
+    }
 }
 
 impl<G> DistributionConverter<G> for EdsrmMonotousDistributionConverter
@@ -136,13 +152,7 @@ where
         G: UniformRandomGenerator,
     {
         loop {
-            let x_gen: f64 = generator.next();
-            let column_index: usize = (x_gen * self.majorant.columns.len() as f64) as usize;
-            let column = &self.majorant.columns[column_index];
-            let y: f64 = generator.next() * column.height;
-            let result = column.x
-                + column.width * (self.majorant.columns.len() as f64 * x_gen - column_index as f64);
-            if y <= column.inner_height || y <= (self.distribution)(result) {
+            if let Some(result) = self.try_generate_from_uniform_in_range(generator.next(), generator) {
                 return result;
             }
         }

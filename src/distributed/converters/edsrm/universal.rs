@@ -46,14 +46,24 @@ impl<G> DistributionConverter<G> for EdsrmUniversalDistributionConverter
     fn generate_from_uniform(&self, generator: &mut G) -> f64 
         where G: UniformRandomGenerator
     {
-        let position = generator.next() * self.area;
-        let mut id = 0;
-        for i in 0..self.converters.len() {
-            if position < self.converters[i].area_before {
-                id = i;
-                break;
+        loop {
+            let gen = generator.next();
+            let position = gen * self.area;
+            let mut id = 0;
+            for i in 0..self.converters.len() {
+                if position < self.converters[i].area_before {
+                    id = i;
+                    break;
+                }
             }
+            let gen1 = if id == 0 {
+                gen * self.converters[id].area_before
+            } else {
+                let area_before_previous = self.converters[id - 1].area_before;
+                let area_before = self.converters[id].area_before;
+                gen * (area_before - area_before_previous) + area_before_previous
+            };
+            self.converters[id].converter.try_generate_from_uniform_in_range(gen1, generator);
         }
-        self.converters[id].converter.generate_from_uniform(generator)
     }
 }
