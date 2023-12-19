@@ -63,7 +63,9 @@ impl<G> DistributionConverter<G> for EdsrmUniversalDistributionConverter
                 let area_before = self.converters[id].area_before;
                 gen * (area_before - area_before_previous) + area_before_previous
             };
-            self.converters[id].converter.try_generate_from_uniform_in_range(gen1, generator);
+            if let Some(result) = self.converters[id].converter.try_generate_from_uniform_in_range(gen1, generator) {
+                return result;
+            }
         }
     }
 }
